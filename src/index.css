@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --glass-bg: rgba(186, 230, 253, 0.18);
+  --glass-border: rgba(186, 230, 253, 0.35);
+  --glass-highlight: rgba(255, 255, 255, 0.55);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 40%, #e0f2fe 100%); color: #0c4a6e; overflow-x: hidden; }
+h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+
+.glass { background: var(--glass-bg); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid var(--glass-border); box-shadow: inset 0 1px 0 0 var(--glass-highlight), 0 8px 32px 0 rgba(2, 132, 199, 0.15); border-radius: 1.5rem; position: relative; overflow: hidden; }
+.glass::before { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.25) 40%, rgba(255, 255, 255, 0.05) 60%, transparent 100%); pointer-events: none; opacity: 0.7; }
+.alphabet-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.alphabet-char { position: absolute; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: rgba(14, 165, 233, 0.10); user-select: none; will-change: transform; }
+@keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; } }
+@keyframes drift { 0% { transform: translate(0, 0) rotate(0deg); } 50% { transform: translate(40px, -30px) rotate(180deg); } 100% { transform: translate(0, 0) rotate(360deg); } }
+.blob { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.5; z-index: 0; pointer-events: none; will-change: transform; }
+@keyframes blobFloat { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(60px, -50px) scale(1.1); } 66% { transform: translate(-40px, 40px) scale(0.95); } }
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.nav-link { position: relative; transition: color 0.3s ease; }
+.nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, #0ea5e9, #38bdf8); border-radius: 2px; transition: width 0.3s ease; }
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+.skill-fill { background: linear-gradient(90deg, #0ea5e9, #38bdf8, #7dd3fc); border-radius: 999px; height: 100%; width: 0; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+.lift { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease; }
+.lift:hover { transform: translateY(-6px); box-shadow: 0 20px 48px 0 rgba(2, 132, 199, 0.25); }
+@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); } 50% { box-shadow: 0 0 0 20px rgba(14, 165, 233, 0); } }
+.pulse-glow { animation: pulseGlow 2.5s infinite; }
+
+.hologram-wrap { --holo-x: 50%; --holo-y: 50%; --rotate-x: 0deg; --rotate-y: 0deg; width: min(100%, 280px); perspective: 900px; cursor: crosshair; }
+.hologram-frame { position: relative; aspect-ratio: 4 / 5; padding: 8px; overflow: hidden; border-radius: 1.75rem; background: linear-gradient(135deg, rgba(125, 211, 252, 0.85), rgba(14, 165, 233, 0.25), rgba(186, 230, 253, 0.85)); box-shadow: 0 18px 40px rgba(2, 132, 199, 0.18), inset 0 0 20px rgba(255, 255, 255, 0.5); transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y)); transition: transform 0.18s ease-out, box-shadow 0.3s ease; transform-style: preserve-3d; }
+.hologram-frame::before, .hologram-frame::after { content: ''; position: absolute; inset: -50%; pointer-events: none; opacity: 0; transition: opacity 0.25s ease; }
+.hologram-frame::before { background: conic-gradient(from 90deg at var(--holo-x) var(--holo-y), rgba(34, 211, 238, 0.45), rgba(255, 255, 255, 0.15), rgba(14, 165, 233, 0.5), rgba(34, 211, 238, 0.1)); mix-blend-mode: screen; }
+.hologram-frame::after { background: radial-gradient(circle at var(--holo-x) var(--holo-y), rgba(255, 255, 255, 0.7), transparent 28%); mix-blend-mode: overlay; }
+.hologram-image { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 1.35rem; filter: saturate(1.08) contrast(1.03); transition: filter 0.3s ease, transform 0.3s ease; }
+.hologram-shine, .hologram-scanlines, .hologram-corner { position: absolute; pointer-events: none; }
+.hologram-shine { inset: 0; opacity: 0; background: radial-gradient(120px circle at var(--holo-x) var(--holo-y), rgba(255, 255, 255, 0.5), transparent 70%); mix-blend-mode: screen; transition: opacity 0.25s ease; }
+.hologram-scanlines { inset: 8px; border-radius: 1.35rem; opacity: 0; background: repeating-linear-gradient(0deg, transparent 0 5px, rgba(125, 211, 252, 0.2) 6px 7px); mix-blend-mode: screen; transform: translateY(0); }
+.hologram-corner { width: 18px; height: 18px; opacity: 0; border-color: rgba(255, 255, 255, 0.9); transition: opacity 0.25s ease; }
+.hologram-corner-tl { top: 18px; left: 18px; border-top: 2px solid; border-left: 2px solid; }
+.hologram-corner-tr { top: 18px; right: 18px; border-top: 2px solid; border-right: 2px solid; }
+.hologram-corner-bl { bottom: 18px; left: 18px; border-bottom: 2px solid; border-left: 2px solid; }
+.hologram-corner-br { right: 18px; bottom: 18px; border-right: 2px solid; border-bottom: 2px solid; }
+.hologram-caption { display: block; margin-top: 12px; color: rgba(3, 105, 161, 0.7); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-align: center; text-transform: uppercase; transition: color 0.25s ease; }
+.hologram-active .hologram-frame { box-shadow: 0 24px 55px rgba(2, 132, 199, 0.3), 0 0 28px rgba(56, 189, 248, 0.35), inset 0 0 24px rgba(255, 255, 255, 0.6); }
+.hologram-active .hologram-frame::before, .hologram-active .hologram-frame::after, .hologram-active .hologram-shine, .hologram-active .hologram-corner { opacity: 1; }
+.hologram-active .hologram-image { filter: saturate(1.55) contrast(1.08) brightness(1.08) hue-rotate(8deg); }
+.hologram-active .hologram-scanlines { opacity: 0.9; animation: scan 1.5s linear infinite; }
+.hologram-active .hologram-caption { color: #0284c7; }
+@keyframes scan { from { transform: translateY(-12px); } to { transform: translateY(12px); } }
+@media (prefers-reduced-motion: reduce) { .hologram-frame, .hologram-image, .hologram-shine, .hologram-corner { transition: none; } .hologram-active .hologram-scanlines { animation: none; } }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #e0f2fe; }
+::-webkit-scrollbar-thumb { background: linear-gradient(#38bdf8, #0ea5e9); border-radius: 999px; }
